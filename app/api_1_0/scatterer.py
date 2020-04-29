@@ -1,6 +1,9 @@
 import base64
 import io
 import os
+
+from flask import jsonify
+
 from .. import db
 from .. import sftp_client
 from ..models import *
@@ -91,10 +94,10 @@ def post_scatterer():
             x_force=x_force,
             y_force=y_force,
             z_force=z_force,
-            force_data_path='',
-            force_image_path='',
+            force_data_path=sftp_client.create_url('force/{}'.format(force_dict_name)),
+            force_image_path=sftp_client.create_url('force_image/{}'.format(force_image_name)),
             model_id=model_id,
-            params=json.dumps(scatterer_params),
+            model_params=json.dumps(scatterer_params),
             status_id=1
         )
 
@@ -106,8 +109,7 @@ def post_scatterer():
 
         os.remove(model_local_path)
         os.remove(force_image_path)
-        os.remove(model_local_path)
-        os.remove(force_numpy_path)
-        return result_image.decode('ascii')
+        os.remove(force_dict_path)
+        return jsonify({'figure': result_image.decode('ascii')}), 201
     except Exception as e:
         return bad_request(e)

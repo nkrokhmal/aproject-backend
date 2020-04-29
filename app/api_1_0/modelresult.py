@@ -11,14 +11,22 @@ import json
 def get_modelresult():
     try:
         model_ids = request.args.getlist("model_id")
-        result = db.session.query(ModelResult, Model)\
+        model_results = db.session.query(ModelResult, Model)\
             .join(Model)\
             .filter(or_(ModelResult.model_id.in_(model_ids), len(model_ids) == 0))\
             .filter(ModelResult.status_id == 1)\
             .filter(Model.status_id == 1)\
             .all()
-        return jsonify([json.dumps(x, cls=AlchemyEncoder) for x in result])
+        model_results = json.loads(json.dumps(model_results, cls=AlchemyEncoder))
+        print(model_results)
+        result = [x[0] for x in model_results]
+        print(result)
+        for i in range(len(result)):
+            result[i]['Model'] = model_results[i][1]
+        # print(json.dumps(result, cls=AlchemyEncoder))
+        return jsonify(json.dumps(result))
     except Exception as e:
+        print(e)
         return bad_request(e)
 
 
