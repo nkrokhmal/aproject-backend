@@ -32,6 +32,7 @@ def create_parser():
     parser.add_argument('Step', type=float, location='form', required=False)
     parser.add_argument('ModelPath', type=str, location='form', required=False)
     parser.add_argument('ModelName', type=str, location='form', required=False)
+    parser.add_argument('ZSurf', type=float, location='form', required=False)
     return parser
 
 
@@ -58,15 +59,15 @@ def post_scatterer():
 
         if args['Type'] == 'X':
             coordinates = Coordinates(x=np.arange(args['From'], args['To'], args['Step']), y=np.array([0.0]),
-                                      z=np.array([0.0]))
+                                      z=np.array([0.0]), z_surf=args['ZSurf'])
             type_coordinate = 0
         elif args['Type'] == 'Y':
             coordinates = Coordinates(x=np.array([0.0]), y=np.arange(args['From'], args['To'], args['Step']),
-                                      z=np.array([0.0]))
+                                      z=np.array([0.0]), z_surf=args['ZSurf'])
             type_coordinate = 1
         else:
             coordinates = Coordinates(x=np.array([0.0]), y=np.array([0.0]),
-                                      z=np.arange(args['From'], args['To'], args['Step']))
+                                      z=np.arange(args['From'], args['To'], args['Step']), z_surf=args['ZSurf'])
             type_coordinate = 2
 
         sftp_client.download_file_local(model_local_path, model_path)

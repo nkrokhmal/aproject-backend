@@ -38,10 +38,10 @@ class Spectrum:
 
 
 class Coordinates:
-    def __init__(self, x=np.array([0.]), y=np.array([0.0]), z=np.arange(-0.02, 0.02, 0.001)):
+    def __init__(self, x=np.array([0.]), y=np.array([0.0]), z=np.arange(-0.02, 0.02, 0.001), z_surf=0.):
         self.x = x
         self.y = y
-        self.z = z
+        self.z = z - z_surf
         self.N_points = x.shape[0] * y.shape[0] * z.shape[0]
         self.nx = x.shape[0]
         self.ny = y.shape[0]
