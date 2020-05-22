@@ -46,7 +46,7 @@ def build_focused_beam(r_in=0.0, r_out=0.05, dx=0.001, R0=0.07, f=1e6, rho=1e3, 
     x_surf = dx * x_surf.astype(float)
     y_surf = x_surf.copy()
     y_surf = y_surf.T
-    z_surf = R0 - (R0 ** 2 - r_out ** 2) ** (1 / 2) + 10 * dx
+    z_surf = R0 * 0.9
     p_flat = np.zeros((2 * int(N2), 2 * int(N2))) * (0. + 1j * 0.)
     n_z = np.sqrt(K_12 * (1 - (x_array ** 2 + y_array ** 2) / R0 ** 2))
 
@@ -59,7 +59,7 @@ def build_focused_beam(r_in=0.0, r_out=0.05, dx=0.001, R0=0.07, f=1e6, rho=1e3, 
     x_surf_test = dx * np.arange(- N2 / 2 + 1., N2 / 2 + 1.)
     x_surf_test = np.array([x_surf_test] * len(x_surf_test))
     y_surf_test = x_surf_test.T
-    z_surf_test = x_surf_test * 0 + z_surf
+    z_surf_test = x_surf_test * 0 + R0 * 0.9
 
     shape = x_surf_test.shape
     x_test = np.asarray(x_surf_test).reshape(-1)
@@ -72,10 +72,10 @@ def build_focused_beam(r_in=0.0, r_out=0.05, dx=0.001, R0=0.07, f=1e6, rho=1e3, 
 
     p_flat = np.zeros((int(2 * N2), int(2 * N2)))
     p_flat[int(N2 / 2):int(3 * N2 / 2), int(N2 / 2):int(3 * N2 / 2)] = p_trans
-    figure1 = plt.figure(figsize=(6, 5))
+    figure1 = plt.figure(figsize=(5, 5))
     m_z = p_flat.shape[0]
     m_x = p_flat.shape[1]
-    extent = [- N2 / 2 * dx, N2 / 2 * dx, - N2 / 2 * dx, N2 / 2 * dx]
+    extent = [- N2 * dx, N2 * dx, - N2 * dx, N2 * dx]
     im1 = plt.matshow(np.abs(p_flat), fignum=figure1.number, extent=extent, aspect='auto')
     plt.colorbar()
 

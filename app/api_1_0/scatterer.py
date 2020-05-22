@@ -45,12 +45,12 @@ def post_scatterer():
         model_id = args['ModelName']
 
         cur_time = time.strftime('%Y%m%d%H%M%S')
-        force_dict_name = '{}_{}.npy'.format(model_id, cur_time)
+        force_dict_name = '{}_{}.txt'.format(model_id, cur_time)
         force_image_name = '{}_{}.png'.format(model_id, cur_time)
         force_dict_path = '/opt/download/{}'.format(force_dict_name)
         force_image_path = '/opt/download/{}'.format(force_image_name)
         model_local_path = '/opt/download/{}.mat'.format(model_id)
-        force_numpy_path = '/opt/download/{}_{}'.format(model_id, cur_time)
+        force_numpy_path = '/opt/download/{}_{}.txt'.format(model_id, cur_time)
 
         obj = Object(a=args['Radius'], rho=args['DensityOfScatterer'], c_l=args['LongitudinalSpeed'],
                      c_t=args['TransverseSpeed'])
@@ -77,7 +77,7 @@ def post_scatterer():
         fig = points.build_rad_force(force, type_coordinate)
 
         fig.savefig(force_image_path)
-        np.save(force_numpy_path, force)
+        np.savetxt(force_numpy_path, force)
 
         buffer = io.BytesIO()
         fig.savefig(buffer, format='png')

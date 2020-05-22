@@ -42,6 +42,7 @@ class Coordinates:
         self.x = x
         self.y = y
         self.z = z - z_surf
+        self.z_surf = z_surf
         self.N_points = x.shape[0] * y.shape[0] * z.shape[0]
         self.nx = x.shape[0]
         self.ny = y.shape[0]
@@ -186,11 +187,11 @@ class Points:
         kr22 = (self.wave.k ** 2 - kr2) * self.k_window
         self.kz_array = np.float_power(kr22, 1 / 2)
 
-        self.phi_k = (math.pi + np.arctan2(self.kx_array, self.ky_array)) * self.k_window
+        self.phi_k = np.arctan2(self.kx_array, self.ky_array) * self.k_window
         self.cos_th_k = np.float_power((1 - self.kr_array ** 2 / self.wave.k ** 2) * self.k_window, 0.5)
         self.th_k = np.arccos(self.cos_th_k) * self.k_window
 
-        self.phi = (math.pi + np.arctan2(x_array, y_array))
+        self.phi = np.arctan2(x_array, y_array)
         self.cos_th = 0 * self.r_array
         self.th = np.arccos(self.cos_th)
 
@@ -304,9 +305,9 @@ class Points:
 
     def build_rad_force(self, force, type=2):
         fig, ax = plt.subplots(figsize=(10, 5))
-        ax.plot(self.points[:, type] * 1000, force[:, 0])
-        ax.plot(self.points[:, type] * 1000, force[:, 1])
-        ax.plot(self.points[:, type] * 1000, force[:, 2])
+        ax.plot((self.points[:, type] + self.coordinates.z_surf) * 1000, force[:, 0])
+        ax.plot((self.points[:, type] + self.coordinates.z_surf) * 1000, force[:, 1])
+        ax.plot((self.points[:, type] + self.coordinates.z_surf) * 1000, force[:, 2])
 
         ax.legend(['F_x', 'F_y', 'F_z'], loc='upper right', shadow=True)
         ax.set_xlabel('z, mm')

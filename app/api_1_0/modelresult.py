@@ -18,9 +18,7 @@ def get_modelresult():
             .filter(Model.status_id == 1)\
             .all()
         model_results = json.loads(json.dumps(model_results, cls=AlchemyEncoder))
-        print(model_results)
         result = [x[0] for x in model_results]
-        print(result)
         for i in range(len(result)):
             result[i]['Model'] = model_results[i][1]
         # print(json.dumps(result, cls=AlchemyEncoder))

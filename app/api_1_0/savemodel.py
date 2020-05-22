@@ -47,6 +47,9 @@ def create_parser():
             'SpeedOfSound', type=float, location='form', required=True)
         parser.add_argument(
             'DensityOfMedium', type=float, location='form', required=True)
+        parser.add_argument(
+            'ZSurf', type=float, location='form', required=True)
+
         return parser
     except Exception as e:
         return bad_request(e)
@@ -63,11 +66,13 @@ def post_savemodel():
         speed_of_sound = args['SpeedOfSound']
         density_of_medium = args['DensityOfMedium']
         dx = args['Dx']
+        z_surf = args['ZSurf']
 
         params = json.dumps({'dx': dx,
                              'frequency': frequency,
                              'speed_of_sound': speed_of_sound,
-                             'density_of_medium': density_of_medium})
+                             'density_of_medium': density_of_medium,
+                             'z_surf': z_surf})
         model_path = 'models/{}.mat'.format(model_name)
         distribution_path = 'distributions/{}.jpg'.format(model_name)
 
